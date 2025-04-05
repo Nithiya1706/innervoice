@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions | AI Inner Voice Simulator</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: #2c3e50;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a, .toggle-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px 15px;
+            margin-right: 20px; /* Moves button slightly left */
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Container */
+        .container {
+            background: white;
+            padding: 40px;
+            max-width: 800px;
+            margin: 60px auto;
+            border-radius: 12px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        /* Terms List */
+        ul {
+            text-align: left;
+            padding: 0;
+            list-style: none;
+        }
+
+        ul li {
+            background: #ecf0f1;
+            margin: 12px 0;
+            padding: 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        ul li span {
+            margin-right: 12px;
+            font-size: 22px;
+        }
+
+        /* Buttons */
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 14px 22px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+
+        .dark-mode .container {
+            background: #2c2c2c;
+            box-shadow: none;
+        }
+
+        .dark-mode ul li {
+            background: #444;
+        }
+
+        .dark-mode .navbar {
+            background: #1a1a1a;
+        }
+
+        .dark-mode .footer {
+            background: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </div>
+        <button class="toggle-btn" id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Terms and Conditions</h1>
+        <p>By using AI Inner Voice Simulator, you agree to the following terms:</p>
+        
+        <ul>
+            <li><span>⚠</span> The AI-generated responses are for guidance only and should not be taken as absolute advice.</li>
+            <li><span>📊</span> Your interactions may be stored to improve the service.</li>
+            <li><span>🚫</span> Users must not input any harmful, offensive, or illegal content.</li>
+            <li><span>🔄</span> We reserve the right to modify or terminate the service at any time.</li>
+            <li><span>🔐</span> Your data privacy is important to us, and we take necessary security measures.</li>
+            <li><span>💬</span> Feedback and suggestions are welcome to improve our AI system.</li>
+        </ul>
+        
+        <a href="{{ url_for('home') }}" class="back-btn">Back to Home</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 AI Inner Voice Simulator. All rights reserved. | <a href="{{ url_for('terms') }}">Terms</a> | <a href="{{ url_for('contact') }}">Contact Us</a></p>
+    </div>
+
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        function toggleDarkMode() {
+            const body = document.body;
+            const toggleBtn = document.getElementById("darkModeToggle");
+
+            // Toggle dark mode class
+            body.classList.toggle("dark-mode");
+
+            // Change icon based on mode
+            if (body.classList.contains("dark-mode")) {
+                toggleBtn.innerHTML = "☀️ Light Mode";
+            } else {
+                toggleBtn.innerHTML = "🌙 Dark Mode";
+            }
+        }
+    </script>
+
+</body>
+</html>

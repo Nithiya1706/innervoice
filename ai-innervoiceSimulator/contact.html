@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | AI Inner Voice Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: #2c3e50;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container */
+        .container {
+            background: white;
+            padding: 40px;
+            max-width: 700px;
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 32px;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            margin-top: 20px;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #2c3e50;
+            outline: none;
+            box-shadow: 0px 2px 10px rgba(44, 62, 80, 0.3);
+        }
+
+        .contact-form button {
+            background: #f4c542;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: 0.3s;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form button:hover {
+            background: #e0b13f;
+        }
+
+        /* Google Map */
+        .map {
+            margin-top: 30px;
+        }
+        .map iframe {
+            width: 100%;
+            height: 250px;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 30px;
+            font-size: 15px;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+
+        .dark-mode .container {
+            background: #2c2c2c;
+            box-shadow: none;
+        }
+
+        .dark-mode input, .dark-mode textarea {
+            background: #444;
+            color: white;
+            border: 1px solid #666;
+        }
+
+        .dark-mode .contact-form button {
+            background: #f4c542;
+            color: black;
+        }
+
+        .dark-mode .footer {
+            background: #1a1a1a;
+        }
+
+        /* Dark Mode Toggle Button */
+        .toggle-btn {
+            background: #f4c542;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 15px;
+            margin-right: 20px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: #e0b13f;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('terms') }}">Terms</a>        </div>
+        <button class="toggle-btn" id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Contact Us</h1>
+    
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <p class="alert {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    
+        <p>If you have any questions or suggestions, feel free to reach out to us:</p>
+        
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <form action="{{ url_for('contact') }}" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <!-- Google Maps Placeholder -->
+        <div class="map">
+            <h2>Find Us Here</h2>
+            <iframe id="googleMap" 
+                width="100%" 
+                height="250px" 
+                style="border:0; border-radius: 10px;"
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 AI Inner Voice Simulator. All rights reserved.</p>
+    </div>
+
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        function toggleDarkMode() {
+            const body = document.body;
+            const toggleBtn = document.getElementById("darkModeToggle");
+            body.classList.toggle("dark-mode");
+            toggleBtn.innerHTML = body.classList.contains("dark-mode") ? "☀️ Light Mode" : "🌙 Dark Mode";
+        }
+
+        function initMap() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    // Get latitude and longitude
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+
+                    // Set the iframe src to the user's location
+                    var mapSrc = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1000!2d${lng}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1635786974601`;
+                    document.getElementById("googleMap").src = mapSrc;
+                },
+                function (error) {
+                    console.error("Error getting location: ", error);
+                    alert("Location access denied or unavailable.");
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    }
+
+    // Call initMap when the page loads
+    window.onload = initMap;
+    </script>
+
+</body>
+</html>

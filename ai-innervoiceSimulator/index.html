@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Inner Voice Simulator</title>
+    <style>
+        /* General Styles */
+       html,body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: #2c3e50;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a, .toggle-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Main Container */
+        .container {
+    flex: 1; /* Pushes the footer to the bottom */
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        /* AI Response */
+        .ai-response {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            text-align: left;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .input-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    padding: 10px;
+    gap: 10px; /* Space between elements */
+}
+.submit-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #3498db;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+        .submit-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Voice Record Button */
+        .record-btn {
+    background: #e67e22;
+    color: white;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+        .record-btn:hover {
+            background: #d35400;
+        }
+
+        .recording {
+            background: red !important;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Footer */
+        .footer {
+    text-align: center;
+    padding: 15px;
+    background: #2c3e50;
+    color: white;
+    width: 100%;
+    margin-top: auto;
+}
+
+        .footer a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+
+        .dark-mode .container {
+            background: #2c2c2c;
+            box-shadow: none;
+        }
+
+        .dark-mode .navbar {
+            background: #1a1a1a;
+        }
+
+        .dark-mode .ai-response {
+            background: #333;
+            color: #f4f4f4;
+        }
+
+        .dark-mode .footer {
+            background: #1a1a1a;
+        }
+
+        /* Dark Mode Button */
+        .toggle-btn {
+            background: #34495e;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+            margin-right: 10px; /* Moves button slightly left */
+        }
+
+        .toggle-btn:hover {
+            background: #2c3e50;
+        }
+
+        textarea {
+    flex: 1; /* Takes most of the space */
+    height: 20px; /* Increase height */
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    resize: none; /* Disable manual resizing */
+    outline: none;
+}
+
+.persona { font-weight: bold; }
+.optimist { color: green; }
+.realist { color: gray; }
+.worrier { color: crimson; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('history') }}">History</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </div>
+        <div>
+            <button class="logout-btn" onclick="location.href='{{ url_for('logout') }}'">Logout</button>
+            <button class="toggle-btn" id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome, {{ current_user.username }}!</h1>
+
+        <!-- AI Response -->
+        {% if ai_response %}
+        <div class="ai-response">
+            <h2>AI Debate:</h2>
+            {% for line in ai_response.splitlines() %}
+                {% if 'Optimist:' in line %}
+                    <p class="persona optimist">{{ line }}</p>
+                {% elif 'Realist:' in line %}
+                    <p class="persona realist">{{ line }}</p>
+                {% elif 'Worrier:' in line %}
+                    <p class="persona worrier">{{ line }}</p>
+                {% elif 'Rebel:' in line %}
+                    <p class="persona rebel">{{ line }}</p>
+                {% elif 'Lover:' in line %}
+                    <p class="persona lover">{{ line }}</p>
+                {% else %}
+                    <p>{{ line }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+
+        <h2>Enter Your Dilemma</h2>
+
+       <!-- Input Box with Buttons Inside -->
+    <form method="POST">
+    <div class="input-container">
+        <textarea id="decision" name="decision" required placeholder="Type your dilemma..."></textarea>
+        <button type="button" id="recordButton" class="record-btn">🎤</button>
+        <button type="submit" class="submit-btn">➤</button>
+    </div>
+    </form>
+
+
+
+    
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 AI Inner Voice Simulator. All rights reserved.</p>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        document.getElementById("recordButton").addEventListener("click", async function() {
+            const recordBtn = document.getElementById("recordButton");
+
+            if (!mediaRecorder || mediaRecorder.state === "inactive") {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start();
+                recordBtn.classList.add("recording");
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                setTimeout(() => {
+                    mediaRecorder.stop();
+                    recordBtn.classList.remove("recording");
+                }, 5000);
+
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+                    const formData = new FormData();
+                    formData.append("audio", audioBlob);
+
+                    const response = await fetch("/transcribe", { method: "POST", body: formData });
+                    const result = await response.json();
+                    document.getElementById("decision").value = result.transcription;
+                };
+            }
+        });
+
+
+        function toggleDarkMode() {
+        const body = document.body;
+        const toggleBtn = document.getElementById("darkModeToggle");
+
+        // Toggle dark mode class
+        body.classList.toggle("dark-mode");
+
+        // Change icon based on mode
+        if (body.classList.contains("dark-mode")) {
+            toggleBtn.innerHTML = "☀️ Light Mode";
+        } else {
+            toggleBtn.innerHTML = "🌙 Dark Mode";
+        }
+    }
+
+    </script>
+
+</body>
+</html>

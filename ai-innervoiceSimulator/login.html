@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Inner Voice Simulator</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px 15px;
+            margin-right: 20px; /* Moves button slightly left */
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Login Container */
+        .login-container {
+            max-width: 400px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 24px;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            text-align: left;
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .login-btn {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Link */
+        p {
+            margin-top: 15px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+
+        .dark-mode .login-container {
+            background: #2c2c2c;
+            box-shadow: none;
+        }
+
+        .dark-mode input {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        .dark-mode .login-btn {
+            background: #1abc9c;
+        }
+
+        .dark-mode .login-btn:hover {
+            background: #16a085;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">AI Inner Voice Simulator</div>
+        <button class="toggle-btn" id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Login Box -->
+    <div class="login-container">
+        <h2>Login</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+        <form method="POST">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" required>
+
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+
+    </div>
+
+    <!-- JavaScript for Dark Mode -->
+    <script>
+        function toggleDarkMode() {
+        const body = document.body;
+        const toggleBtn = document.getElementById("darkModeToggle");
+
+        // Toggle dark mode class
+        body.classList.toggle("dark-mode");
+
+        // Check if dark mode is active and update button text/icon
+        if (body.classList.contains("dark-mode")) {
+            toggleBtn.innerHTML = "☀️ Light Mode";
+            localStorage.setItem("darkMode", "enabled"); // Save preference
+        } else {
+            toggleBtn.innerHTML = "🌙 Dark Mode";
+            localStorage.setItem("darkMode", "disabled"); // Save preference
+        }
+    }
+
+    // Load dark mode preference when page loads
+    window.onload = function () {
+        const toggleBtn = document.getElementById("darkModeToggle");
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            toggleBtn.innerHTML = "☀️ Light Mode";
+        }
+    };
+    </script>
+
+</body>
+</html>
