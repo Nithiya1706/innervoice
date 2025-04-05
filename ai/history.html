@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaction History | AI Inner Voice Simulator</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2c3e50;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover {
+            color: #1abc9c;
+        }
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .nav-actions button {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .download-btn {
+            background: #3498db;
+            color: white;
+        }
+        .download-btn:hover {
+            background: #2980b9;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px 15px;
+            margin-right: 20px; 
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Container */
+        .container {
+            background: white;
+            padding: 30px;
+            max-width: 900px;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        /* Search & Filter */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            padding: 10px;
+            width: 80%;
+            max-width: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Interaction List */
+        .interaction-list {
+            list-style: none;
+            padding: 0;
+        }
+        .interaction-item {
+            background: #ecf0f1;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .interaction-item strong {
+            color: #2c3e50;
+        }
+        .delete-interaction {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            color: #e74c3c;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .delete-interaction:hover {
+            color: #c0392b;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 30px;
+        }
+        .footer a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+        .dark-mode .container {
+            background: #2c2c2c;
+            box-shadow: none;
+        }
+        .dark-mode .navbar {
+            background: #1a1a1a;
+        }
+        .dark-mode .interaction-item {
+            background: #333;
+            color: #f4f4f4;
+        }
+        .dark-mode .footer {
+            background: #1a1a1a;
+        }
+        .dark-mode .toggle-btn {
+            background: #f39c12;
+        }
+        .dark-mode .toggle-btn:hover {
+            background: #e67e22;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <!-- Left side links -->
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+            <a href="{{ url_for('terms') }}">Terms</a>
+        </div>
+
+        <!-- Right side buttons -->
+        <div class="nav-actions">
+            <button class="download-btn" onclick="downloadHistory()">Download CSV</button>
+            <button class="delete-btn" onclick="deleteAllInteractions()">Delete All</button>
+            <button class="toggle-btn" id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Your Interaction History</h1>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search interactions..." onkeyup="filterHistory()">
+        </div>
+
+        <!-- Interaction List -->
+        <ul class="interaction-list" id="interactionList">
+            {% for interaction in interactions %}
+                <li class="interaction-item">
+                    <strong>{{ interaction.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</strong><br>
+                    <em>User:</em> {{ interaction.user_input }}<br>
+                    <em>AI:</em> {{ interaction.ai_response }}<br>
+                    <button class="delete-interaction" onclick="deleteInteraction('{{ interaction.id }}')">❌</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 AI Inner Voice Simulator. All rights reserved. | <a href="{{ url_for('terms') }}">Terms</a> | <a href="{{ url_for('home') }}">Home</a></p>
+    </div>
+
+    <!-- Dark Mode & Search Scripts -->
+    <script>
+        function toggleDarkMode() {
+        const body = document.body;
+        const toggleBtn = document.getElementById("darkModeToggle");
+
+        // Toggle dark mode class
+        body.classList.toggle("dark-mode");
+
+        
+        if (body.classList.contains("dark-mode")) {
+            toggleBtn.innerHTML = "☀️ Light Mode";
+            localStorage.setItem("darkMode", "enabled"); 
+        } else {
+            toggleBtn.innerHTML = "🌙 Dark Mode";
+            localStorage.setItem("darkMode", "disabled"); 
+        }
+    }
+
+    // Load dark mode preference when page loads
+    window.onload = function () {
+        const toggleBtn = document.getElementById("darkModeToggle");
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            toggleBtn.innerHTML = "☀️ Light Mode";
+        }
+    };
+
+        function filterHistory() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let interactions = document.getElementsByClassName("interaction-item");
+
+            for (let i = 0; i < interactions.length; i++) {
+                let text = interactions[i].innerText.toLowerCase();
+                interactions[i].style.display = text.includes(input) ? "" : "none";
+            }
+        }
+
+        function downloadHistory() {
+            let data = [];
+            let interactions = document.getElementsByClassName("interaction-item");
+
+            for (let i = 0; i < interactions.length; i++) {
+                let text = interactions[i].innerText.split("\n").map(line => line.trim()).filter(line => line);
+                data.push(text.join(","));
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8," + data.join("\n");
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "interaction_history.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function deleteInteraction(id) {
+            fetch(`/delete_interaction/${id}`, { method: "POST" }).then(() => location.reload());
+        }
+
+        function deleteAllInteractions() {
+            fetch(`/delete_all_interactions`, { method: "POST" }).then(() => location.reload());
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | AI Inner Voice Simulator</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: #2c3e50;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-left a, .nav-right button {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .nav-left a:hover, .nav-right button:hover {
+            text-decoration: underline;
+        }
+
+        /* Container */
+        .container {
+            background: white;
+            padding: 30px;
+            max-width: 800px;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Call-to-Action */
+        .cta-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Team Section */
+        .team {
+            margin-top: 40px;
+        }
+        
+        .team h2 {
+            color: #2c3e50;
+        }
+
+        .team-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .team-member {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 180px;
+        }
+
+        .team-member img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        .back-btn, .toggle-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover, .toggle-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 30px;
+        }
+
+        .footer a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+
+        .dark-mode .container {
+            background: #2c2c2c;
+            box-shadow: none;
+        }
+
+        .dark-mode .navbar {
+            background: #1a1a1a;
+        }
+
+        .dark-mode .footer {
+            background: #1a1a1a;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px 15px;
+            margin-right: 20px; /* Moves button slightly left */
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+            <a href="{{ url_for('terms') }}">Terms</a>
+        </div>
+        <div class="nav-right">
+            <button class="toggle-btn" id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>About AI Inner Voice Simulator</h1>
+        <p>AI Inner Voice Simulator is an innovative tool that helps users make better decisions by simulating internal debates between different cognitive approaches. Whether you are indecisive or just looking for some AI-generated insights, our tool is here to assist you.</p>
+
+        <p>We strive to provide a seamless and intuitive experience, allowing users to explore different perspectives and gain clarity in their decision-making process.</p>
+
+        <a href="{{ url_for('contact') }}" class="cta-btn">Get in Touch</a>
+
+        <!-- Team Section -->
+        <div class="team">
+            <h2>Meet Our Team</h2>
+            <div class="team-container">
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/80" alt="Team Member">
+                    <h3>Nithiya</h3>
+                    <p>Leader</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/80" alt="Team Member">
+                    <h3>Hemalatha</h3>
+                    <p>Member</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/80" alt="Team Member">
+                    <h3>Subiksha</h3>
+                    <p>Member</p>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 AI Inner Voice Simulator. All rights reserved. | <a href="{{ url_for('terms') }}">Terms</a> | <a href="{{ url_for('home') }}">Home</a></p>
+    </div>
+
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        function toggleDarkMode() {
+        const body = document.body;
+        const toggleBtn = document.getElementById("darkModeToggle");
+
+        // Toggle dark mode class
+        body.classList.toggle("dark-mode");
+
+        // Check if dark mode is active and update button text/icon
+        if (body.classList.contains("dark-mode")) {
+            toggleBtn.innerHTML = "☀️ Light Mode";
+            localStorage.setItem("darkMode", "enabled"); // Save preference
+        } else {
+            toggleBtn.innerHTML = "🌙 Dark Mode";
+            localStorage.setItem("darkMode", "disabled"); // Save preference
+        }
+    }
+
+    // Load dark mode preference when page loads
+    window.onload = function () {
+        const toggleBtn = document.getElementById("darkModeToggle");
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            toggleBtn.innerHTML = "☀️ Light Mode";
+        }
+    };
+    </script>
+
+</body>
+</html>
